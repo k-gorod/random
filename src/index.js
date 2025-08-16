@@ -28,12 +28,12 @@ app.get('/', (req, res) => {
 
 app.post('/add', (req, res) => {
     try{
-        const { title } = req.query;
-        if (!string) {
+        const { string: title } = req.query;
+        if (!title) {
             return res.status(400).send('String is required.');
         }
         
-        fs.appendFile(FILE_PATH, string + '\n', (err) => {
+        fs.appendFile(FILE_PATH, title + '\n', (err) => {
             if (err) {
                 return res.status(500).send('Error writing to file.');
             }

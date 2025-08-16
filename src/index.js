@@ -27,20 +27,27 @@ app.get('/', (req, res) => {
 });
 
 app.post('/add', (req, res) => {
-    const { title } = req.query;
-    if (!string) {
-        return res.status(400).send('String is required.');
+    try{
+        const { title } = req.query;
+        if (!string) {
+            return res.status(400).send('String is required.');
+        }
+        
+        fs.appendFile(FILE_PATH, string + '\n', (err) => {
+            if (err) {
+                return res.status(500).send('Error writing to file.');
+            }
+            res.send('String added to file.');
+        });
+    }catch(error){
+        res.status(500).send('Error');
     }
     
-    fs.appendFile(FILE_PATH, string + '\n', (err) => {
-        if (err) {
-            return res.status(500).send('Error writing to file.');
-        }
-        res.send('String added to file.');
-    });
 });
 
 app.get('/list', (req, res) => {
+    try{
+        
     fs.readFile(FILE_PATH, 'utf8', (err, data) => {
         if (err) {
             return res.status(500).send('Error reading file.');
@@ -49,11 +56,17 @@ app.get('/list', (req, res) => {
 
         res.send(lines);
     });
+    }catch(error){
+        res.status(500).send('Error');
+    }
 });
 
 
 
 app.get('/admin/delete', async (req, res) => {
+    try{
+        
+    
   const { title } = req.query;
 
   if (!title) {
@@ -79,17 +92,25 @@ app.get('/admin/delete', async (req, res) => {
           res.send('Line removed successfully.');
       });
   });
+    }catch(error){
+        res.status(500).send('Error');
+    }
 
 })
 
 app.get('/admin/clear', async (req, res) => {
-  fs.writeFile(FILE_PATH, '', (error) => {
+    try{
+    fs.writeFile(FILE_PATH, '', (error) => {
     if(error) {
       res.send(`Error: ${error}`);
     }
 
     res.send('Success');
   });
+    }catch(error){
+        res.status(500).send('Error');
+    }
+  
 })
 
 app.listen(PORT, () => {

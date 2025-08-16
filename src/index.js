@@ -2,11 +2,25 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
+
 const app = express();
 const PORT = 3002;
 const FILE_PATH = path.join(__dirname, 'data.txt');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
+    return res.status(200).json({})
+  }
+
+  next()
+})
 
 app.get('/', (req, res) => {
     res.send('Server is running!');

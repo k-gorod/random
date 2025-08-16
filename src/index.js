@@ -33,7 +33,7 @@ app.post('/add', (req, res) => {
             return res.status(400).send('String is required.');
         }
         
-        fs.appendFile(FILE_PATH, title + '\n', (err) => {
+        fs.appendFile(FILE_PATH,  '\n' + title + '\n', (err) => {
             if (err) {
                 return res.status(500).send('Error writing to file.');
             }

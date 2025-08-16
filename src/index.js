@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.post('/add', (req, res) => {
     try{
-        const { string: title } = req.query;
+        const { title } = req.query;
         if (!title) {
             return res.status(400).send('String is required.');
         }
